@@ -8,7 +8,7 @@ exports.downloadData = function () {
   return fetch(url)
     .then(request => request.text())
     .then(body => cheerio.load(body, {decodeEntities: false}))
-    .then($ => { 
+    .then($ => {
       return $('.calendar-items li a')
         .map((index, item) => {
           return {
@@ -35,9 +35,10 @@ exports.downloadData = function () {
           if (nameDay.text.length < 2) nameDay.text[1] = {};
           var record = {
             svatekSlavi: nameDay.text[0]['Svátek má'],
-            vyznamneDny: nameDay.text[1]['Významné dny']
+            // Zatim neresim - nejsou pravidelne tak jako jmeniny
+            // vyznamneDny: nameDay.text[1]['Významné dny']
           };
-          result[nameDay['date']] = record; 
+          result[nameDay['date']] = record.svatekSlavi;
           return result;
         }, {});
     });
