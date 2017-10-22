@@ -1,5 +1,6 @@
 var fetch = require('node-fetch');
 var cheerio = require('cheerio');
+var moment = require('moment');
 
 
 exports.downloadData = function () {
@@ -27,10 +28,18 @@ exports.downloadData = function () {
               obj[categoryName] = arr.slice(1, arr.length);
               return obj;
             })
-              
           }
         })
-        .get();
+        .get()
+        .reduce((result, nameDay) => {
+          if (nameDay.text.length < 2) nameDay.text[1] = {};
+          var record = {
+            svatekSlavi: nameDay.text[0]['Svátek má'],
+            vyznamneDny: nameDay.text[1]['Významné dny']
+          };
+          result[nameDay['date']] = record; 
+          return result;
+        }, {});
     });
 }
 
@@ -47,14 +56,18 @@ function convertDateLabelToNumber(strDate) {
     "zari": 9,
     "rijen": 10,
     "listopad": 11,
-    "prosinec": 11,
+    "prosinec": 12,
   };
 
   var d = strDate.split('/');
-  var year = parseInt(d[1]);
-  var month = dayToMonth[d[2]];
-  var day = parseInt(d[3]);
+  var year = d[1];
+  var month = dayToMonth[d[2]].toString();
+  if (month.length < 2) month = "0" + month;
+  var day = d[3];
+  if (day.length < 2) day = "0" + day;
 
-  return new Date(year, month, day).toISOString();
+  var date = year + "-"  + month + "-" + day;
+  return moment.utc(date).toISOString().substring(5, 10);
 }
+
 exports.downloadData().then(data => console.log(JSON.stringify(data, null, ' ')));
