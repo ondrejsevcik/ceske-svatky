@@ -10,6 +10,7 @@
     "cheerio": "^1.0.0-rc.2",
     "dotenv": "^4.0.0",
     "moment": "^2.19.1",
+    "moment-timezone": "^0.5.13",
     "node-fetch": "^1.7.3",
     "twit": "^2.2.9"
   },
