@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "mocha" 
+    "test": "mocha"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "node-fetch": "^1.7.3"
+    "dotenv": "^4.0.0",
+    "node-fetch": "^1.7.3",
+    "twit": "^2.2.9"
   },
   "devDependencies": {
     "mocha": "^4.0.1"
