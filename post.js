@@ -2,7 +2,7 @@ var Twit = require('twit');
 var dotenv = require('dotenv');
 var fs = require('fs');
 var moment = require('moment-timezone');
-var jmeniny = require('./cs-jmeniny.json');
+var svatky = require('./svatky.js');
 
 // Setup environment variables
 dotenv.config();
@@ -16,16 +16,15 @@ var twit = new Twit({
   timeout_ms: 60*1000,
 });
 
-var dayMonth = moment.tz('Europe/Prague').format('MM-DD')
-var jmena = jmeniny[dayMonth];
-if (jmena.length < 0) {
-  console.warn('Dneska nema nikdo svatek');
+var today = moment.tz('Europe/Prague');
+
+var msg = svatky.getGetNamedayFor(today);
+if (msg.length < 0) {
+  console.warn('Dneska nema nikdo svatek, netwitujem.');
+  return;
 }
 
-
-
-var message = 'Dnes ma svátek ' + jmena.join(', ');
-twit.post('statuses/update', { status: message }, function(err, data, response) {
+twit.post('statuses/update', { status: msg }, function(err, data, response) {
   console.log(data)
 })
 

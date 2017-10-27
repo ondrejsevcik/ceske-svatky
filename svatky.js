@@ -1,4 +1,27 @@
-export.jmeniny = {
+const moment = require('moment-timezone');
+
+exports.getNamedayFor = (date) => {
+  let momentDate = moment(date);
+  let dayMonth = momentDate.format('MM-DD');
+  let names = jmeniny[dayMonth];
+  if (!names || names.length < 1) {
+    return '';
+  }
+  names = names.join(', ');
+  names = replaceLast(names, ', ', ' a ');
+  return 'Dnes ma svátek ' + names;
+};
+
+function replaceLast(str, pattern, replacement) {
+  var pos = str.lastIndexOf(pattern);
+  if (pos <= -1) {
+    return str;
+  }
+
+  return str.substring(0, pos) + replacement + str.substring(pos+pattern.length);
+}
+
+const jmeniny = {
  "01-02": [ "Karina", "Karína", "Karin" ],
  "01-03": [ "Radmila" ],
  "01-04": [ "Diana" ],
@@ -359,3 +382,4 @@ export.jmeniny = {
  "12-30": [ "David" ],
  "12-31": [ "Silvestr", "Silvester", "Sylvestr" ],
 }
+
