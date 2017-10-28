@@ -17,9 +17,11 @@ var twit = new Twit({
 });
 
 var today = moment.tz('Europe/Prague');
+console.info('Today\'s date: ', today.toISOString());
 
-var msg = svatky.getGetNamedayFor(today);
-if (msg.length < 0) {
+var msg = svatky.getNamedayFor(today);
+console.info('Today\'s greeting:', msg);
+if (msg.length <= 0) {
   console.warn('Dneska nema nikdo svatek, netwitujem.');
   return;
 }
