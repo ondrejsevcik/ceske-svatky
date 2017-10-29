@@ -20,13 +20,17 @@ async function makeAScreenshot() {
     document.querySelector('.name').innerText = namedayMessage;
   }, namedayMessage);
 
-  await page.screenshot({
+  let posterBase64 = await page.screenshot({
     path: 'poster.png',
     fullPage: true,
-  });
+  })
+    .then(buffer => buffer.toString('base64'));
 
   await browser.close();
+
+  return posterBase64;
 }
 
 makeAScreenshot();
 
+exports.makeAScreenshot = makeAScreenshot;
