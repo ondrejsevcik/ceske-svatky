@@ -3,8 +3,10 @@ var svatky = require('./svatky.js');
 var moment = require('moment-timezone');
 var path = require('path');
 
-async function makeAScreenshot() {
-  const browser = await puppeteer.launch();
+async function makeAScreenshot(date = moment(), posterName = 'poster.png') {
+  // no-sandbox to make it run in heroku
+  // https://github.com/jontewks/puppeteer-heroku-buildpack
+  const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
   const page = await browser.newPage();
 
@@ -14,14 +16,14 @@ async function makeAScreenshot() {
   let posterHtmlPath = path.resolve(__dirname, 'poster.html');
   await page.goto('file://' + posterHtmlPath);
 
-  let namedayMessage = svatky.getNamedayFor(moment());
+  let namedayMessage = svatky.getNamedayFor(date);
 
   await page.evaluate((namedayMessage) => {
     document.querySelector('.name').innerText = namedayMessage;
   }, namedayMessage);
 
   let posterBase64 = await page.screenshot({
-    path: 'poster.png',
+    path: posterName,
     fullPage: true,
   })
     .then(buffer => buffer.toString('base64'));

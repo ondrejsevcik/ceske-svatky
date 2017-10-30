@@ -21,7 +21,7 @@ function replaceLast(str, pattern, replacement) {
   return str.substring(0, pos) + replacement + str.substring(pos+pattern.length);
 }
 
-const jmeniny = {
+exports.jmeniny = jmeniny = {
  "01-02": [ "Karina", "Karína", "Karin" ],
  "01-03": [ "Radmila" ],
  "01-04": [ "Diana" ],
