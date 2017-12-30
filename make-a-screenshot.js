@@ -11,6 +11,8 @@ async function makeAScreenshot(date = moment(), posterName = 'poster.png') {
   const page = await browser.newPage();
 
   // 1080 is instagrams max resolution
+  // height is irrelevant as we will take a full page screenshot
+  // (anything that's overflowing will be screenshotted as well)
   await page.setViewport({ width: 1080, height: 200 } );
 
   let posterHtmlPath = path.resolve(__dirname, 'poster.html');

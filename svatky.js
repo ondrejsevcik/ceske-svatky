@@ -9,7 +9,7 @@ exports.getNamedayFor = (date) => {
   }
   names = names.join(', ');
   names = replaceLast(names, ', ', ' a ');
-  return 'Dnes ma svátek ' + names;
+  return names;
 };
 
 function replaceLast(str, pattern, replacement) {
