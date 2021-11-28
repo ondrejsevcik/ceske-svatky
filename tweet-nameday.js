@@ -2,14 +2,10 @@ const Twit = require("twit");
 const nameDay = require("./name-day.js");
 
 (async () => {
-  let today = new Date();
-  let tweetText = nameDay.getNameDayFor(today);
+  let tweetText = nameDay.getNameDayFor(new Date());
   if (tweetText.length <= 0) {
-    console.warn("No tweet text, nothing to tweet.");
-    return;
+    throw new Error("Nothing to tweet.");
   }
-
-  let posterBase64 = await nameDay.getPoster({ date: new Date() });
 
   let twit = new Twit({
     consumer_key: process.env.TWITTER_CONSUMER_SECRET,
@@ -20,37 +16,17 @@ const nameDay = require("./name-day.js");
     timeout_ms: 60 * 1000,
   });
 
-  const params = { media_data: posterBase64 };
-  // The picture has to be uploaded first before we can tweet it.
-  twit.post("media/upload", params, (err, data, response) => {
-    if (err) {
-      console.error("Error uploading media", err);
-      return;
-    }
+  let { data: media } = await twit.post("media/upload", {
+    media_data: await nameDay.getPoster({ date: new Date() }),
+  });
 
-    // now we can assign alt text to the media, for use by screen readers and
-    // other text-based presentations and interpreters
-    let mediaIdStr = data.media_id_string;
-    let altText = tweetText;
-    let meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
+  await twit.post("media/metadata/create", {
+    media_id: media.media_id_string,
+    alt_text: { text: tweetText },
+  });
 
-    twit.post("media/metadata/create", meta_params, (err, data, response) => {
-      if (err) {
-        console.error("Error creating metadata", err);
-        return;
-      }
-
-      // now we can reference the media and post a tweet (media will attach to the tweet)
-      let params = { status: tweetText, media_ids: [mediaIdStr] };
-
-      twit.post("statuses/update", params, (err, data, response) => {
-        if (err) {
-          console.error("Error posting status", err);
-          return;
-        }
-
-        console.log("Successfuly tweeted", data);
-      });
-    });
+  await twit.post("statuses/update", {
+    status: tweetText,
+    media_ids: [media.media_id_string],
   });
 })();
