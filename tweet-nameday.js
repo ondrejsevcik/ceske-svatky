@@ -23,6 +23,11 @@ const nameDay = require("./name-day.js");
   const params = { media_data: posterBase64 };
   // The picture has to be uploaded first before we can tweet it.
   twit.post("media/upload", params, (err, data, response) => {
+    if (err) {
+      console.error("Error uploading media", err);
+      return;
+    }
+
     // now we can assign alt text to the media, for use by screen readers and
     // other text-based presentations and interpreters
     let mediaIdStr = data.media_id_string;
@@ -30,14 +35,22 @@ const nameDay = require("./name-day.js");
     let meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
 
     twit.post("media/metadata/create", meta_params, (err, data, response) => {
-      if (!err) {
-        // now we can reference the media and post a tweet (media will attach to the tweet)
-        var params = { status: tweetText, media_ids: [mediaIdStr] };
-
-        twit.post("statuses/update", params, (err, data, response) => {
-          console.log(data);
-        });
+      if (err) {
+        console.error("Error creating metadata", err);
+        return;
       }
+
+      // now we can reference the media and post a tweet (media will attach to the tweet)
+      let params = { status: tweetText, media_ids: [mediaIdStr] };
+
+      twit.post("statuses/update", params, (err, data, response) => {
+        if (err) {
+          console.error("Error posting status", err);
+          return;
+        }
+
+        console.log("Successfuly tweeted", data);
+      });
     });
   });
 })();
