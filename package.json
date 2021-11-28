@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "puppeteer": "^0.12.0",
+    "puppeteer": "^12.0.0",
     "twit": "^2.2.9"
   },
   "devDependencies": {
