@@ -45,12 +45,10 @@
         src="https://source.unsplash.com/featured?1080&nature"
       />
       <script>
-        // Set image url with random keyword
-        let keywords = ["nature", "landscape", "animal"];
-        let randomKeyword =
-          keywords[Math.floor(Math.random() * keywords.length)];
-        // 1080 in the url indicates that width is 1080 - width of the instagram picture
-        let imgUrl = `https://source.unsplash.com/featured?1080&${randomKeyword}`;
+        let keywords = ["nature", "landscape", "animal", "night", "sky"];
+        let randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+        let pictureWidth = 1080; // Instagram width
+        let imgUrl = `https://source.unsplash.com/featured?${pictureWidth}&${randomKeyword}`;
         document.querySelector(".cover").setAttribute("src", imgUrl);
       </script>
     </div>
