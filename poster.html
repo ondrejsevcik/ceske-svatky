@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>image template</title>
-    <link href="https://fonts.googleapis.com/css?family=Cormorant+SC:300,400,500,600,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Cormorant+SC:300,400,500,600,700&amp;subset=cyrillic,cyrillic-ext"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <style>
-      *{
+      * {
         margin: 0;
         padding: 0;
       }
@@ -18,7 +21,7 @@
       }
 
       .name {
-        font-family: 'Cormorant SC', serif;
+        font-family: "Cormorant SC", serif;
         font-weight: 400;
         color: white;
         position: absolute;
@@ -26,7 +29,7 @@
         left: 5%;
         padding: 5px 10px;
         font-size: 4vw;
-        box-shadow: inset 0 0 0 200px rgba(255,255,255,0.2);
+        box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.2);
       }
 
       .cover {
@@ -37,16 +40,19 @@
 
     <div class="wrapper">
       <div class="name">Břeťa, Čenda a Žaneta</div>
-      <img class="cover" src="https://source.unsplash.com/featured?1080&nature" />
+      <img
+        class="cover"
+        src="https://source.unsplash.com/featured?1080&nature"
+      />
       <script>
         // Set image url with random keyword
-        let keywords = ['nature', 'landscape', 'animal'];
-        let randomKeyword = keywords[Math.floor(Math.random()*keywords.length)];
+        let keywords = ["nature", "landscape", "animal"];
+        let randomKeyword =
+          keywords[Math.floor(Math.random() * keywords.length)];
         // 1080 in the url indicates that width is 1080 - width of the instagram picture
         let imgUrl = `https://source.unsplash.com/featured?1080&${randomKeyword}`;
-        document.querySelector('.cover').setAttribute('src', imgUrl);
+        document.querySelector(".cover").setAttribute("src", imgUrl);
       </script>
     </div>
-
   </body>
 </html>
