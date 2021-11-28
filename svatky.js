@@ -1,8 +1,6 @@
-const moment = require("moment-timezone");
-
 exports.getNamedayFor = (date) => {
-  let momentDate = moment(date);
-  let dayMonth = momentDate.format("MM-DD");
+  console.assert(date, `date can't be null`);
+  let dayMonth = date.toISOString().substring(5, 10);
   let names = jmeniny[dayMonth];
   if (!names || names.length < 1) {
     return "";

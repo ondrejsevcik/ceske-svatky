@@ -1,7 +1,5 @@
 var Twit = require("twit");
 var dotenv = require("dotenv");
-var fs = require("fs");
-var moment = require("moment-timezone");
 var svatky = require("./svatky.js");
 var makeAScreenshot = require("./make-a-screenshot.js").makeAScreenshot;
 
@@ -18,7 +16,7 @@ var twit = new Twit({
 });
 
 async function post() {
-  var today = moment.tz("Europe/Prague");
+  var today = new Date();
   console.info("Today's date: ", today.toISOString());
 
   var msg = svatky.getNamedayFor(today);
@@ -28,7 +26,7 @@ async function post() {
     return;
   }
 
-  let posterBase64 = await makeAScreenshot();
+  let posterBase64 = await makeAScreenshot(new Date());
 
   // first we must post the media to Twitter
   twit.post(

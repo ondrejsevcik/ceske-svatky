@@ -1,9 +1,8 @@
 var puppeteer = require("puppeteer");
 var svatky = require("./svatky.js");
-var moment = require("moment-timezone");
 var path = require("path");
 
-async function makeAScreenshot(date = moment(), posterName = "poster.png") {
+async function makeAScreenshot(date, posterName = "poster.png") {
   // no-sandbox to make it run in heroku
   // https://github.com/jontewks/puppeteer-heroku-buildpack
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
@@ -36,6 +35,6 @@ async function makeAScreenshot(date = moment(), posterName = "poster.png") {
   return posterBase64;
 }
 
-makeAScreenshot();
+makeAScreenshot(new Date());
 
 exports.makeAScreenshot = makeAScreenshot;
