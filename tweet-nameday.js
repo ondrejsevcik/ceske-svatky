@@ -12,10 +12,10 @@ const nameDay = require("./name-day.js");
   let posterBase64 = await nameDay.getPoster({ date: new Date() });
 
   let twit = new Twit({
-    consumer_key: process.env.CONSUMER_KEY,
-    consumer_secret: process.env.CONSUMER_SECRET,
-    access_token: process.env.ACCESS_TOKEN,
-    access_token_secret: process.env.ACCESS_TOKEN_SECRET,
+    consumer_key: process.env.TWITTER_CONSUMER_SECRET,
+    consumer_secret: process.env.TWITTER_CONSUMER_KEY,
+    access_token: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
     // optional HTTP request timeout to apply to all requests.
     timeout_ms: 60 * 1000,
   });
