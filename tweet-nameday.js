@@ -8,8 +8,8 @@ const nameDay = require("./name-day.js");
   }
 
   let twit = new Twit({
-    consumer_key: process.env.TWITTER_CONSUMER_SECRET,
-    consumer_secret: process.env.TWITTER_CONSUMER_KEY,
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token: process.env.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
     // optional HTTP request timeout to apply to all requests.
