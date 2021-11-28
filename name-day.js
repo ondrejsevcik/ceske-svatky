@@ -1,4 +1,42 @@
-exports.getNamedayFor = (date) => {
+const puppeteer = require("puppeteer");
+const path = require("path");
+
+async function getPoster({ date }) {
+  // no-sandbox to make it run in heroku
+  // https://github.com/jontewks/puppeteer-heroku-buildpack
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+
+  const page = await browser.newPage();
+
+  // 1080 is instagrams max resolution
+  // height is irrelevant as we will take a full page screenshot
+  // (anything that's overflowing will be screenshotted as well)
+  await page.setViewport({ width: 1080, height: 200 });
+
+  let posterHtmlPath = path.resolve(__dirname, "poster.html");
+  await page.goto("file://" + posterHtmlPath);
+
+  let namedayMessage = getNameDayFor(date);
+
+  await page.evaluate((namedayMessage) => {
+    document.querySelector(".name").innerText = namedayMessage;
+  }, namedayMessage);
+
+  const posterName = "poster.png";
+
+  let posterBase64 = await page
+    .screenshot({
+      path: posterName,
+      fullPage: true,
+    })
+    .then((buffer) => buffer.toString("base64"));
+
+  await browser.close();
+
+  return posterBase64;
+}
+
+function getNameDayFor(date) {
   console.assert(date, `date can't be null`);
   let dayMonth = date.toISOString().substring(5, 10);
   let names = jmeniny[dayMonth];
@@ -8,7 +46,7 @@ exports.getNamedayFor = (date) => {
   names = names.join(", ");
   names = replaceLast(names, ", ", " a ");
   return names;
-};
+}
 
 function replaceLast(str, pattern, replacement) {
   var pos = str.lastIndexOf(pattern);
@@ -21,7 +59,7 @@ function replaceLast(str, pattern, replacement) {
   );
 }
 
-exports.jmeniny = jmeniny = {
+const jmeniny = {
   "01-02": ["Karina", "Karína", "Karin"],
   "01-03": ["Radmila"],
   "01-04": ["Diana"],
@@ -383,19 +421,7 @@ exports.jmeniny = jmeniny = {
   "12-31": ["Silvestr", "Silvester", "Sylvestr"],
 };
 
-exports.statniSvatky = {
-  // date format MM-DD
-  "01-01": ["Nový rok", "Den obnovy samostatného českého státu"],
-  // TODO: pridat Velky patek
-  // TODO: pridate Velikonocni pondeli
-  "05-01": ["Svátek práce"],
-  "05-08": ["Den vítězství"],
-  "07-05": ["Den slovanských věrozvěstů Cyrila a Metoděje"],
-  "07-06": ["Den upálení mistra Jana Husa"],
-  "09-28": ["Den české státnosti"],
-  "10-28": ["Den vzniku samostatného československého státu"],
-  "11-17": ["Den boje za svobodu a demokracii"],
-  "12-24": ["Štědrý den"],
-  "12-25": ["1. svátek vánoční"],
-  "12-26": ["2. svátek vánoční"],
+module.exports = {
+  getNameDayFor,
+  getPoster,
 };
