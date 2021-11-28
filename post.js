@@ -1,10 +1,6 @@
 var Twit = require("twit");
-var dotenv = require("dotenv");
 var svatky = require("./svatky.js");
 var makeAScreenshot = require("./make-a-screenshot.js").makeAScreenshot;
-
-// Setup environment variables
-dotenv.config();
 
 var twit = new Twit({
   consumer_key: process.env.CONSUMER_KEY,
