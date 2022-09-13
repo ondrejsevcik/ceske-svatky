@@ -17,5 +17,5 @@ describe("getPoster", () => {
   it("returns base64 encoded poster", async () => {
     let poster = await nameDay.getPoster({ date: new Date() });
     expect(typeof poster).toBe("string");
-  });
+  }, 60000);
 });

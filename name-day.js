@@ -14,7 +14,7 @@ async function getPoster({ date }) {
   await page.setViewport({ width: 1080, height: 200 });
 
   let posterHtmlPath = path.resolve(__dirname, "poster.html");
-  await page.goto("file://" + posterHtmlPath);
+  await page.goto("file://" + posterHtmlPath, { timeout: 60000 });
 
   let namedayMessage = getNameDayFor(date);
 
