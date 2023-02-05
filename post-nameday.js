@@ -12,14 +12,15 @@ const nameDay = require("./name-day.js");
     accessToken: process.env.MASTODON_ACCESS_TOKEN,
   });
 
-  // let { data: media } = await twit.post("media/upload", {
-  //   media_data: await nameDay.getPoster({ date: new Date() }),
-  // });
+  const attachment = await masto.v2.mediaAttachments.create({
+    file: await nameDay.getPosterBlob({ date: new Date() }),
+    description: "Ilustrativní obrázek pro dnešní svátek.",
+  });
 
   const status = await masto.v1.statuses.create({
     status: statusText,
     visibility: "public",
-    // mediaIds: [attachment.id],
+    mediaIds: [attachment.id],
   });
 
   console.log(status);

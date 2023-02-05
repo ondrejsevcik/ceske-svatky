@@ -13,9 +13,9 @@ describe("getNameDayFor", () => {
   });
 });
 
-describe("getPoster", () => {
-  it("returns base64 encoded poster", async () => {
-    let poster = await nameDay.getPoster({ date: new Date() });
-    expect(typeof poster).toBe("string");
+describe("getPosterBlob", () => {
+  it("returns Blob encoded poster", async () => {
+    let poster = await nameDay.getPosterBlob({ date: new Date() });
+    expect(poster instanceof Blob).toBe(true);
   }, 60000);
 });

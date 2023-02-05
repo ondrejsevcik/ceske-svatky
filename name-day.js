@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const path = require("path");
 
-async function getPoster({ date }) {
+async function getPosterBlob({ date }) {
   // no-sandbox to make it run in heroku
   // https://github.com/jontewks/puppeteer-heroku-buildpack
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
@@ -24,16 +24,14 @@ async function getPoster({ date }) {
 
   const posterName = "poster.png";
 
-  let posterBase64 = await page
-    .screenshot({
-      path: posterName,
-      fullPage: true,
-    })
-    .then((buffer) => buffer.toString("base64"));
+  let posterBuffer = await page.screenshot({
+    path: posterName,
+    fullPage: true,
+  });
 
   await browser.close();
 
-  return posterBase64;
+  return new Blob([posterBuffer]);
 }
 
 function getNameDayFor(date) {
@@ -423,5 +421,5 @@ const jmeniny = {
 
 module.exports = {
   getNameDayFor,
-  getPoster,
+  getPosterBlob,
 };
