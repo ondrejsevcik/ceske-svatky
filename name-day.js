@@ -48,7 +48,10 @@ async function fetchUnsplashImgUrl() {
 
   return fetch(url)
     .then((r) => r.json())
-    .then((data) => data.urls.regular);
+    .then((data) => {
+      console.debug("Unsplash received data", data);
+      return data.urls.regular;
+    });
 }
 
 function getNameDayFor(date) {
