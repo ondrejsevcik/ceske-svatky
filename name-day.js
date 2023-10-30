@@ -16,6 +16,12 @@ async function getPosterBlob({ date }) {
   let posterHtmlPath = path.resolve(__dirname, "poster.html");
   await page.goto("file://" + posterHtmlPath, { timeout: 60000 });
 
+  let unsplashImgUrl = await fetchUnsplashImgUrl();
+
+  await page.evaluate((imgUrl) => {
+    document.querySelector(".cover").setAttribute("src", imgUrl);
+  }, unsplashImgUrl);
+
   let namedayMessage = getNameDayFor(date);
 
   await page.evaluate((namedayMessage) => {
@@ -34,6 +40,17 @@ async function getPosterBlob({ date }) {
   return new Blob([posterBuffer]);
 }
 
+async function fetchUnsplashImgUrl() {
+  let keywords = ["nature", "landscape", "animal", "night", "sky"];
+  let randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+  let ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+  let url = `https://api.unsplash.com/photos/random/?query=${randomKeyword}&client_id=${ACCESS_KEY}`;
+
+  return fetch(url)
+    .then((r) => r.json())
+    .then((data) => data.urls.regular);
+}
+
 function getNameDayFor(date) {
   console.assert(date, `date can't be null`);
   let dayMonth = date.toISOString().substring(5, 10);
@@ -47,7 +64,7 @@ function getNameDayFor(date) {
 }
 
 function replaceLast(str, pattern, replacement) {
-  var pos = str.lastIndexOf(pattern);
+  let pos = str.lastIndexOf(pattern);
   if (pos <= -1) {
     return str;
   }
