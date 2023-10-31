@@ -40,7 +40,17 @@
 
     <div class="wrapper">
       <div class="name">Břeťa, Čenda a Žaneta</div>
-      <img class="cover" src="" />
+      <img
+        class="cover"
+        src="https://source.unsplash.com/featured?1080&nature"
+      />
+      <script>
+        let keywords = ["nature", "landscape", "animal", "night", "sky"];
+        let randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+        let pictureWidth = 1080; // Instagram width
+        let imgUrl = `https://source.unsplash.com/featured?${pictureWidth}&${randomKeyword}`;
+        document.querySelector(".cover").setAttribute("src", imgUrl);
+      </script>
     </div>
   </body>
 </html>
